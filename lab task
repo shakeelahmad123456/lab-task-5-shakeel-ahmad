@@ -21,6 +21,76 @@ class Queue:
     def size(self):
         return len(self.items)
 
+
+#Q2 .impliment a  circular queue in pythoninclude method for enqueue dequeue,checking if the queue  is empty,checking if the queueis full and fiding the size of the queue
+
+
+
+class CircularQueue:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.queue = [None] * capacity
+        self.front = self.rear = -1
+
+    def is_empty(self):
+        return self.front == self.rear == -1
+
+    def is_full(self):
+        return (self.rear + 1) % self.capacity == self.front
+
+    def enqueue(self, item):
+        if self.is_full():
+            print("Queue is full. Cannot enqueue.")
+        elif self.is_empty():
+            self.front = self.rear = 0
+            self.queue[self.rear] = item
+        else:
+            self.rear = (self.rear + 1) % self.capacity
+            self.queue[self.rear] = item
+
+    def dequeue(self):
+        if self.is_empty():
+            print("Queue is empty. Cannot dequeue.")
+        elif self.front == self.rear:
+            removed_item = self.queue[self.front]
+            self.front = self.rear = -1
+            return removed_item
+        else:
+            removed_item = self.queue[self.front]
+            self.front = (self.front + 1) % self.capacity
+            return removed_item
+
+    def size(self):
+        if self.is_empty():
+            return 0
+        elif self.is_full():
+            return self.capacity
+        elif self.front <= self.rear:
+            return self.rear - self.front + 1
+        else:
+            return self.capacity - self.front + self.rear + 1
+
+# Example Usage:
+my_circular_queue = CircularQueue(5)
+
+print("Is the circular queue empty?", my_circular_queue.is_empty())  # Output: True
+
+my_circular_queue.enqueue(1)
+my_circular_queue.enqueue(2)
+my_circular_queue.enqueue(3)
+my_circular_queue.enqueue(4)
+my_circular_queue.enqueue(5)
+
+print("Is the circular queue full?", my_circular_queue.is_full())  # Output: True
+
+print("Dequeue:", my_circular_queue.dequeue())  # Output: 1
+
+print("Is the circular queue empty?", my_circular_queue.is_empty())  # Output: False
+
+print("Circular Queue size:", my_circular_queue.size())  # Output: 4
+
+
+
 # Example Usage:
 my_queue = Queue()
 
